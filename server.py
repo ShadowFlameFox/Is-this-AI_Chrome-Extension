@@ -26,7 +26,7 @@ def upload_images():
         try:
             image_data = base64_image.split(',')[1]
             image = PILImage.open(BytesIO(base64.b64decode(image_data))).convert("RGB")
-
+            print("-" * 30)
             print("Preprocessing image...")
             inputs = processor(images=image, return_tensors="pt").to(device)
 
@@ -41,20 +41,19 @@ def upload_images():
             probabilities = torch.softmax(logits, dim=-1)
             predicted_prob = probabilities[0, predicted_class_idx].item()
 
-            if predicted_label == 'artificial' and predicted_prob >= .89:
-                print("-" * 30)
-                print(f"Predicted Label: {predicted_label}")
-                print(f"Confidence Score: {predicted_prob:.4f}")
-                results.append({
+            
+            print(f"Predicted Label: {predicted_label}")
+            print(f"Confidence Score: {predicted_prob:.4f}")
+            results.append({
                     "image": base64_image,
                     "label": predicted_label,
                     "probability": predicted_prob
-                })
+                }) 
 
         except Exception as e:
             print(f"Error processing image: {e}")
-            continue
-
+            return jsonify({"error": "Failed to process the image."}), 400
+        
     return jsonify(results)
 
 if __name__ == '__main__':

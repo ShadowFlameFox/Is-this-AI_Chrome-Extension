@@ -36,9 +36,10 @@ This project is a Chrome extension that retrieves images from the current webpag
 
 ## Usage
 
-1. **Open a Webpage** with images in Chrome.
-2. **Click the Extension Icon** to fetch images from the page.
-3. The popup will display the results, highlighting all AI-generated images.
+1. Open a webpage in Chrome that contains images.  
+2. Right-click on the image you want to analyze.  
+3. Select the option "Is this AI?" from the menu.  
+4. A popup will appear with the results, showing the predicted label and confidence level.  
 
 ---
 

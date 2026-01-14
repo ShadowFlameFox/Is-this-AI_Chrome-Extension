@@ -4,16 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Is this AI?</title>
-    <style>
-        img {
-            max-width: 100px;
-            margin: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <script src="popup.js" defer></script>
 </head>
 <body>
-    <h1>AI Images</h1>
-    <div id="imageContainer"></div>
-    <script src="popup.js"></script>
+    <div class="loader" id="loader"></div>
+    <div id="imageContainer" class="image-container"></div>
+    <div id="menu" class="menu">
+        <h1>Is this AI?</h1>
+        <h2>Getting started:</h2>
+        <ol>
+            <li>Right-click on any image in your browser.</li>
+            <li>Select "Is this AI?" from the context menu.</li>
+            <li>Wait until the analysis is complete.</li>
+        </ol>
+        <p>If you have any questions or feedback, please open a <a href="https://github.com/ShadowFlameFox/Is-this-AI_Chrome-Extension/issues" target="_blank">GitHub Issue</a>.</p>
+    </div>
 </body>
 </html>

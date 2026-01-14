@@ -1,9 +1,11 @@
 {
     "manifest_version": 3,
     "name": "Is this AI?",
-    "version": "0.1",
+    "version": "0.2",
     "permissions": [
-        "activeTab"
+        "activeTab",
+        "contextMenus", 
+        "storage"
     ],
     "host_permissions": [
         "<all_urls>",
@@ -14,11 +16,5 @@
     },
     "action": {
         "default_popup": "popup.html"
-    },
-    "content_scripts": [
-        {
-            "matches": ["<all_urls>"],
-            "js": ["content.js"]
-        }
-    ]
+    }
 }
