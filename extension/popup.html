@@ -1,15 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Is this AI?</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="popup.js" defer></script>
 </head>
+
 <body>
+    <div class="settings-icon" id="settingsIcon">
+        <i class="fa fa-cog" aria-hidden="true"></i>
+    </div>
     <div class="loader" id="loader"></div>
     <div id="imageContainer" class="image-container"></div>
+    <br>
+    <div id="settingsMenu" class="settings-menu" style="display: none;">
+        <h1>Settings</h1>
+        <h2>Colors:</h2>
+        <label for="highlight">Highlight Color:</label>
+        <input type="color" id="highlight" name="highlight" value="#8500a0" />
+        <br>
+        <label for="highlightHover">Highlight Hover Color:</label>
+        <input type="color" id="highlightHover" name="highlightHover" value="#540064" />
+        <br>
+        <label for="background">Background Color:</label>
+        <input type="color" id="background" name="background" value="#121212" />
+        <br>
+        <label for="fontColor">Font Color:</label>
+        <input type="color" id="fontColor" name="fontColor" value="#ffffff" />
+        <br>
+        <button id="restoreDefaults">Restore defaults</button>
+    </div>
     <div id="menu" class="menu">
         <h1>Is this AI?</h1>
         <h2>Getting started:</h2>
@@ -18,7 +42,9 @@
             <li>Select "Is this AI?" from the context menu.</li>
             <li>Wait until the analysis is complete.</li>
         </ol>
-        <p>If you have any questions or feedback, please open a <a href="https://github.com/ShadowFlameFox/Is-this-AI_Chrome-Extension/issues" target="_blank">GitHub Issue</a>.</p>
+        <p>If you have any questions or feedback, please open a <a
+                href="https://github.com/ShadowFlameFox/Is-this-AI_Chrome-Extension/issues" target="_blank">GitHub
+                Issue</a>.</p>
     </div>
 </body>
 </html>

@@ -1,23 +1,114 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    document.documentElement.style.setProperty('--highlight-color', 'green');
     const container = document.getElementById('imageContainer');
     const loader = document.getElementById('loader');
     const menu = document.getElementById('menu');
+    const settingsMenu = document.getElementById('settingsMenu');
 
     chrome.storage.local.get("imageUrl", (data) => {
+        container.style.display = 'flex';
         if (!data.imageUrl) {
             loader.style.display = 'none';
+            settingsMenu.style.display = 'none';
             menu.style.display = 'unset';
             return;
         }
         loader.style.display = 'block';
         menu.style.display = 'none';
+        settingsMenu.style.display = 'none';
         let images = Array.isArray(data.imageUrl) ? data.imageUrl : [data.imageUrl];
 
-        fetchAndUploadImages(images, container, loader, menu);
+        fetchAndUploadImages(images, container, loader, menu, settingsMenu);
     });
 });
 
-function fetchAndUploadImages(images, container, loader, menu) {
+const defaults = {
+    highlight: '#8500a0',
+    highlightHover: '#540064',
+    background: '#121212',
+    fontColor: '#ffffff'
+};
+
+const keys = Object.keys(defaults);
+
+function applyColors(values) {
+    const root = document.documentElement;
+    root.style.setProperty('--highlight-color', values.highlight);
+    root.style.setProperty('--highlight-hover-color', values.highlightHover);
+    root.style.setProperty('--bg-color', values.background);
+    root.style.setProperty('--text-color', values.fontColor);
+}
+
+function saveToStorage(values) {
+    localStorage.setItem('colors', JSON.stringify(values));
+}
+
+function loadFromStorage() {
+    try {
+        const raw = localStorage.getItem('colors');
+        return raw ? JSON.parse(raw) : { ...defaults };
+    } catch {
+        return { ...defaults };
+    }
+}
+
+function init() {
+    const values = loadFromStorage();
+    keys.forEach(k => {
+        const el = document.getElementById(k);
+        if (el) el.value = values[k];
+        el?.addEventListener('input', onInputChange);
+    });
+
+    const restoreBtn = document.getElementById('restoreDefaults');
+    if (restoreBtn) restoreBtn.addEventListener('click', restoreDefaults);
+    applyColors(values);
+}
+
+function onInputChange() {
+    const values = {};
+    keys.forEach(k => {
+        const el = document.getElementById(k);
+        values[k] = el ? el.value : defaults[k];
+    });
+    applyColors(values);
+    saveToStorage(values);
+}
+document.addEventListener('DOMContentLoaded', init);
+
+document.getElementById('settingsIcon').addEventListener('click', () => {
+    const container = document.getElementById('imageContainer');
+    const loader = document.getElementById('loader');
+    const menu = document.getElementById('menu');
+    const settingsMenu = document.getElementById('settingsMenu');
+
+    const toggle = settingsMenu.style.display === 'block' ? 'none' : 'block';
+
+    if (toggle === 'block') {
+        container.style.display = 'none';
+        menu.style.display = 'none';
+        settingsMenu.style.display = 'block';
+        loader.style.display = 'none';
+    } else {
+        container.style.display = 'none';
+        settingsMenu.style.display = 'none';
+        menu.style.display = 'unset';
+        loader.style.display = 'none';
+    }
+});
+
+function restoreDefaults() {
+    keys.forEach(k => {
+        const el = document.getElementById(k);
+        if (el) el.value = defaults[k];
+    });
+    applyColors(defaults);
+    saveToStorage(defaults);
+    document.body.offsetHeight;
+}
+
+function fetchAndUploadImages(images, container, loader, menu, settingsMenu) {
     const base64Images = images.map(imgSrc => {
         return new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
@@ -66,6 +157,7 @@ function fetchAndUploadImages(images, container, loader, menu) {
         .then(data => {
             loader.style.display = 'none';
             menu.style.display = 'none';
+            settingsMenu.style.display = 'none';
             container.innerHTML = '';
             data.forEach(item => {
                 const h2 = document.createElement('h2');
@@ -84,6 +176,7 @@ function fetchAndUploadImages(images, container, loader, menu) {
         .catch(error => {
             loader.style.display = 'none';
             menu.style.display = 'none';
+            settingsMenu.style.display = 'none';
 
             console.error("Error during fetch/upload:", error);
 
